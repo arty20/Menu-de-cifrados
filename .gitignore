@@ -1,28 +1,375 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+#include <iostream> 
+#include <string.h> 
+#include <cmath> 
+#include <fstream>
+using namespace std;
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+//Cifrado cesar
+void Cesar(char Archivo[100]) 
+{ 
+	int n,i;
+		char cadena[128];
+        // Crea un fichero de salida
+        fstream fs ("cesar.txt"); 
+		cout<<"Cifrado Cesar"<<endl;
+			fs.close();	
+		// Lee el fichero	
+  		fstream fe("cesar.txt");
+  		// Crea un fichero de salida
+  		ofstream fa ("cesar2.txt");
+		cout << "Introduce el numero de desplazamiento deseado" << endl; 
+   		cin >> n; 
+  		fe.getline(Archivo,100);
+    for (int i = 0; i < Archivo[i]; i++) { 
+        if (Archivo[i] >= 'a' && Archivo[i] <= 'z') { 
+            if (Archivo[i] + n > 'z') { 
+                Archivo[i] = 'a' - 'z' + Archivo[i] + n - 1; 
+                fa<<Archivo[i];
+            } else if (Archivo[i] + n < 'a') { 
+                Archivo[i] = 'z' - 'a' + Archivo[i] + n + 1; 
+            } else { 
+                Archivo[i] += n; 
+                fa<<Archivo[i];
+            } 
+        } else if (Archivo[i] >= 'A' && Archivo[i] <= 'Z') { 
+            if (Archivo[i] + n > 'Z') { 
+                Archivo[i] = 'A' - 'Z' + Archivo[i] + n - 1; 
+                fa<<Archivo[i];
+            } else if (Archivo[i] + n < 'A') { 
+                Archivo[i] = 'Z' - 'A' + Archivo[i] + n + 1;
+				fa<<Archivo[i]; 
+            } else { 
+                Archivo[i] += n; 
+                fa<<Archivo[i];
+            } 
+        } 
+    } 
+    
+} 
+//Funcion descodificar Cifrado Cesar
+void desC(char Archivo[100]) 
+{ 
+		int n,i;
+		char cadena[128];
+        
+		// Leer el fichero	
+  		fstream fe("cesar2.txt");
+  		// Crea un fichero de salida
+  		ofstream fa ("cesar3.txt");
+		cout << "Introduce el numero de casillas a retroceder" << endl; 
+   		cin >> n; 
+  		fe.getline(Archivo,100);
+    for (int i = 0; i < Archivo[i]; i++) { 
+        if (Archivo[i] >= 'a' && Archivo[i] <= 'z') { //Rango de minusculas 
+            if (Archivo[i] - n > 'z') { 
+                Archivo[i] = 'a' + 'z' - Archivo[i] - n +1; 
+                fa<<Archivo[i];
+            } else if (Archivo[i] - n < 'a') { 
+                Archivo[i] = 'z' + 'a' - Archivo[i] - n +1; 
+                fa<<Archivo[i];
+            } else { 
+                Archivo[i] -= n; 
+                fa<<Archivo[i];
+            } 
+        } else if (Archivo[i] >= 'A' && Archivo[i] <= 'Z') { //Rango de Mayusculas
+            if (Archivo[i] - n > 'Z') { 
+                Archivo[i] = 'A' + 'Z' - Archivo[i] - n + 1; 
+                 fa<<Archivo[i];
+            } else if (Archivo[i] - n < 'A') { 
+                Archivo[i] = 'Z' + 'A' - Archivo[i] - n + 1; 
+                 fa<<Archivo[i];
+            } else { 
+                Archivo[i] -= n; 
+                fa<<Archivo[i];
+            } 
+        } 
+    } 
+	
+  	
+  	
+  	
+} 
 
-# Fortran module files
-*.mod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+//Declaramos nuestro metodo que nos permitira codificar  en codigo ascci el mensaje que tenga escrito un fichero
+//pasandole como parametro un arreglo de tipo char.
+void CodiAscci(char Archivo[200])
+
+{
+	//Mediante esta linea de codigo seleccionamos el fichero que deseamos codificar
+	
+	ifstream fs("Prueba.txt");
+	//Creamos un fichero nuevo que por el momento no contiene informacion alguna
+	ofstream fa("Prueba2.txt");
+	
+  	// Accedemos al contenido del archivo que hemos seleccionado y almacenamos su contenido en el arreglo que 
+  	//definimos al comienzo de este metodo
+  	fs.getline(Archivo,200);
+  	
+  	//Esta es una simple imprecion en pantalla del arreglo que ya hemos definido 
+  	//y el cual al ejecutar el programa nos arrojara el mensaje original puesto que aun no lo hemos codificado.
+  	cout<<Archivo<<endl<<endl<<endl;
+  	
+  	
+  	//Mediante este bucle recorreremos coda una de las posiciones de nuestro arreglo con la finalidad
+  	//de poder acceder a cada uno de los caracteres que se encuantran alojados en el arreglo
+  	for(int i=0;Archivo[i]!=0;i++)
+  	{
+  		   
+  		   //Realizamos una conversion de los caracteres que se encuentran alojados en las posiciones de nuestro arreglo 
+  		   //a su valor numerico para enmascarar el contenido original del mensaje
+  		   //al mismo tiempo realizamos una impresion en pantalla ya con el mensaje codificado.
+  		   std::cout<<int (Archivo[i])<<" ";	   
+  		   
+  		   //Utilizamos el objeto que creo el otro fichero y le asignamos el arreglo con el mensaje codificado 
+  		   //permitiendonos guardar el nuevo contenido en el nuevo  documento para no afectar el archivo  original.
+		   fa<<int(Archivo[i])<<" ";
+  	}
+  	//cerramos el documento que creamos con su informacion guardada.
+  	fa.close();
+  	
+}
+
+
+//Declaramos el metodo para codificar el mensaje de un documento txt a clave morse 
+void CodiMorse(char Archivo[200])
+{
+	// creamos un objeto de tipo ifstream y pasamos como parametros el nombre
+	//archivo que vamos a codificar.
+	ifstream fs("Prueba.txt");
+	//Creamos un nuevo fichero
+	ofstream fa("Prueba3.txt");
+	fs.getline(Archivo,200);
+    
+	
+	cout<<Archivo<<endl<<endl<<endl;
+	
+	for(int i = 0; Archivo[i] != 0;i++)
+   {
+       //Con esta sentencia hacemos la comparacion de lo que tiene nuestro arreglo si 
+	   //coinciden los valores imprimimos la asignacion en clave morse.	
+      
+       switch (Archivo[i])
+       {
+           case 65: case 97:
+               
+               std::cout<<".-"<<" ";
+               fa<< ".-"<<" ";//A
+           // cin>>Archivo[i];
+               
+                   break;
+                  
+           case 66: case 98:
+               
+               std::cout<< "-..."<<" ";//B
+               fa<< "-..."<<" ";
+               break;
+          
+           case 67: case 99:
+               
+              std::cout<< "-.-."<<" ";//C
+              fa<< "-.-."<<" ";
+               break;
+          
+           case 68: case 100:
+          
+               std::cout<< "-.."<<" ";//D
+               fa<< "-.."<<" ";
+               break;
+          
+           case 69:  case 101:
+          
+               std::cout<< "."<<" ";//E
+               fa<< "."<<" ";
+               break;
+          
+           case 70: case 102:
+          
+               std::cout<<"..-."<<" ";//F
+               fa<<"..-."<<" ";
+               break;
+          
+           case 71: case 103:
+          
+               std::cout<< "--."<<" ";//G
+               fa<< "--."<<" ";
+               break;
+          
+           case 72: case 104:
+          
+               std::cout<< "...."<<" ";//H
+               fa<< "...."<<" ";
+               break;
+          
+           case 73: case 105:
+          
+               std::cout<< ".."<<" ";//I
+                fa<< ".."<<" ";
+               break;
+          
+           case 74: case 106:
+          
+               std::cout<< ".---"<<" ";//J
+              fa<< ".---"<<" ";
+               break;
+          
+           case 75: case 107:
+               
+               std::cout<< "-.-"<<" ";//K
+               fa<< "-.-"<<" ";
+               break;
+          
+           case 76: case 108:
+          
+               std::cout<< ".-.."<<" ";//L
+               fa<< ".-.."<<" ";
+               break;
+          
+           case 77: case 109:
+          
+               std::cout<< "--"<<" ";//M
+               fa<< "--"<<" ";
+               break;
+          
+           case 78: case 110:
+          
+               std::cout<< "-."<<" ";//N
+              fa<< "-."<<" ";
+               break;
+          
+           case 79: case 111:
+          
+               std::cout<< "---"<<" ";//O
+               fa<< "---"<<" ";
+               break;
+          
+           case 80: case 112:
+          
+               std::cout<< ".--."<<" ";//P 
+               fa<< ".--."<<" ";
+               break;
+          
+           case 81: case 113:
+          
+               std::cout<< "--.-"<<" ";//Q
+               fa<< "--.-"<<" ";
+               break;
+          
+           case 82: case 114:
+          
+               std::cout<< ".-...-. "<<" ";//R
+               fa<< ".-...-. "<<" ";
+               break;
+          
+           case 83: case 115:
+          
+               std::cout<< "..."<<" ";//S
+               fa<< "..."<<" ";
+               break;
+          
+           case 84: case 116:
+          
+               std::cout<< "-"<<" ";//T
+              fa<< "-"<<" ";
+               break;
+          
+           case 85: case 117:
+          
+               std::cout<< ".-."<<" ";//U
+               fa<< ".-."<<" ";
+               break;
+          
+           case 86: case 118:
+          
+               std::cout<< "...-"<<" ";//V
+               fa<< "...-"<<" ";
+               break;
+          
+           case 87: case 119:
+          
+               std::cout<< ".--"<<" ";//W
+               fa<< ".--"<<" ";
+               break;
+          
+           case 88: case 120:
+          
+               std::cout<< "-..-"<<" ";//X
+               fa<< "-..-"<<" ";
+               break;
+          
+           case 89: case 121:
+          
+               std::cout<< "-.--"<<" ";//Y
+               fa<< "-.--"<<" ";
+               break;
+                           
+           case 90: case 122:
+          
+               std::cout<< "--.."<<" ";//Z
+               fa<< "--.."<<" ";
+               break;
+            default:
+               std::cout<<" ";
+               
+               break;
+   
+		 cout<<" "; 
+          
+        
+       }
+   
+}
+//cerramos el nuevo fichero codificado en clave morse
+fa.close();
+}
+
+
+
+
+
+//Metodo principal
+int main (){
+	char Archivo[200];
+	int op;
+	do{
+	
+		char Archivo[100];
+		cout<<"Cifrado"<<endl;
+		cout<<"1.Cesar"<<endl;
+		cout<<"2.Decifrar Cesar"<<endl;
+		cout<<"Codificacion"<<endl;
+		cout<<"3.ASCII"<<endl;
+		cout<<"4.Decifrar ASCII"<<endl;
+		cout<<"5.Morse"<<endl;
+		cout<<"6.Decifrar Morse"<<endl;
+		cout<<"7.Salir"<<endl;
+		cout<<"Elige la opcion deseada"<<endl;
+		cin>>op;
+		cout<<"\n"<<"\n";
+	 
+		switch(op)
+		{
+			case 1:
+				Cesar(Archivo);
+  			break;
+  		
+			case 2:
+				desC(Archivo);
+			break;
+			case 3:
+				CodiAscci(Archivo);
+				break;
+			case 4:
+			    cout<<"Aun falta";
+				break;
+			case 5:
+			   CodiMorse(Archivo);
+			   break;		
+
+
+	}
+	cout<<"\n"<<"\n";
+	}while(op!=7);
+}
